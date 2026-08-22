@@ -1,0 +1,45 @@
+{
+  "rules": {
+    "photos": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "videos": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "menus": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "cosplayers": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "tags": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "settings": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "privateDownloads": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "downloadTokens": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "comments": {
+      ".read": true,
+      "$postId": {
+        ".write": true,
+        "$cmtId": {
+          ".validate": "newData.hasChildren(['name', 'text', 'createdAt']) && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 500"
+        }
+      }
+    }
+  }
+}
