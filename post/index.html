@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi tiết - COSPLAYER</title>
+  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.3.1/css/pro.min.css" />
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="top-header">
+    <a href="../" class="logo" style="text-decoration:none">
+      <i class="fa-solid fa-star"></i> COSPLAYER <i class="fa-solid fa-star"></i>
+    </a>
+    <p class="logo-sub"><i class="fa-solid fa-sparkles"></i> Ảnh Video Cosplay <i class="fa-solid fa-sparkles"></i></p>
+  </header>
+
+  <nav class="main-nav">
+    <div class="nav-inner" id="mainNav">
+      <span class="loading-msg" style="padding:6px">...</span>
+    </div>
+  </nav>
+
+  <main class="detail-page main-content">
+    <div id="detailContent">
+      <div class="detail-loading"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© Copyright by Cosplayer ~ 01.09.22</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../menu.js"></script>
+  <script src="../detail.js"></script>
+  <script>
+    if (typeof initSiteHeader === "function") initSiteHeader();
+  </script>
+</body>
+</html>

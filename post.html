@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirect...</title>
+  <script>
+    (function () {
+      var q = location.search || "";
+      // Giữ nguyên ?id=...
+      location.replace("post/" + (q || ""));
+    })();
+  </script>
+</head>
+<body>
+  <p>Đang chuyển… <a href="post/">Click vào đây</a></p>
+  <script>
+    document.querySelector("a").href = "post/" + (location.search || "");
+  </script>
+</body>
+</html>

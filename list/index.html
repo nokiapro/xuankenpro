@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh sách - COSPLAYER</title>
+  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.3.1/css/pro.min.css" />
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="top-header">
+    <a href="../" class="logo" style="text-decoration:none">
+      <i class="fa-solid fa-star"></i> COSPLAYER <i class="fa-solid fa-star"></i>
+    </a>
+    <p class="logo-sub"><i class="fa-solid fa-sparkles"></i> Ảnh Video Cosplay <i class="fa-solid fa-sparkles"></i></p>
+  </header>
+
+  <nav class="main-nav">
+    <div class="nav-inner" id="mainNav"></div>
+  </nav>
+
+  <main class="list-layout main-content">
+    <div class="list-main">
+      <h2 class="section-title" id="listTitle">
+        <i class="far fa-heart"></i> <span>ẢNH COSPLAY</span> <i class="far fa-heart"></i>
+      </h2>
+      <div class="grid list-grid" id="listGrid">
+        <div class="loading-msg"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>
+      </div>
+      <div class="pagination" id="paginationBottom"></div>
+    </div>
+    <aside class="list-sidebar">
+      <div class="side-block">
+        <h3 class="side-title"><i class="fa-solid fa-magnifying-glass"></i> TÌM KIẾM</h3>
+        <form id="searchForm" class="side-search">
+          <input type="search" id="searchInput" placeholder="Tìm kiếm..." />
+          <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+      </div>
+      <div class="side-block">
+        <h3 class="side-title"><i class="fa-solid fa-shuffle"></i> BÀI VIẾT NGẪU NHIÊN</h3>
+        <ul class="random-list" id="randomList"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>© Copyright by Cosplayer ~ 01.09.22</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../menu.js"></script>
+  <script src="../list.js"></script>
+  <script>initSiteHeader();</script>
+</body>
+</html>
