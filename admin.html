@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <script>
+    (function(){try{var t=localStorage.getItem("cp-theme")||"light";document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - COSPLAYER</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/gZ9wqD9G/LOGOCOSPLAYER.png" />
+  <link rel="apple-touch-icon" href="https://i.ibb.co/gZ9wqD9G/LOGOCOSPLAYER.png" />
+  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.3.1/css/pro.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+</head>
+<body class="page-scroll admin-body-bg">
+  <!-- LOGIN -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <h1 class="logo" style="font-size:1.5rem;margin-bottom:6px">
+        <i class="far fa-star"></i> COSPLAYER <i class="far fa-star"></i>
+      </h1>
+      <p class="login-sub">Đăng nhập quản trị (Firebase Email/Password)</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label><i class="far fa-envelope"></i> Email</label>
+          <input type="email" id="email" placeholder="admin@example.com" autocomplete="email" required />
+        </div>
+        <div class="form-group">
+          <label><i class="far fa-lock"></i> Mật khẩu</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+        <p id="loginError" class="login-error" hidden></p>
+        <button type="submit" class="btn-primary" id="btnLogin">
+          <i class="far fa-right-to-bracket"></i> Đăng nhập
+        </button>
+      </form>
+      <p class="login-hint">
+        Bật Email/Password trong Firebase → Authentication.<br>
+        Tạo user tại Users → Add user.
+      </p>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminPanel" class="admin-panel" hidden>
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <a href="index.html" class="logo admin-logo" title="Về trang chủ">
+          <i class="far fa-star"></i> COSPLAYER
+        </a>
+        <span class="admin-badge">ADMIN</span>
+      </div>
+      <div class="admin-header-right admin-header-actions">
+        <button type="button" id="adminThemeToggleHeader" class="admin-theme-btn" title="Đổi giao diện" aria-label="Đổi giao diện">
+          <i class="far fa-moon"></i>
+        </button>
+        <a href="index.html" class="btn-outline admin-header-desktop-only" target="_blank" rel="noopener">
+          <i class="far fa-arrow-up-right-from-square"></i> Xem site
+        </a>
+        <button type="button" id="btnLogout" class="btn-outline btn-danger admin-header-desktop-only">
+          <i class="far fa-right-from-bracket"></i> Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar" style="overflow-y:auto;max-height:100vh">
+        <button type="button" class="side-btn active" data-tab="dashboard">
+          <i class="far fa-chart-line"></i> Tổng quan
+        </button>
+        <button type="button" class="side-btn" data-tab="photos">
+          <i class="far fa-image"></i> Quản lý Ảnh
+          <span class="side-count" id="countPhotos">0</span>
+        </button>
+        <button type="button" class="side-btn" data-tab="videos">
+          <i class="far fa-video"></i> Quản lý Video
+          <span class="side-count" id="countVideos">0</span>
+        </button>
+        <button type="button" class="side-btn" data-tab="menus">
+          <i class="far fa-bars"></i> Menu
+          <span class="side-count" id="countMenus">0</span>
+        </button>
+        <button type="button" class="side-btn" data-tab="cosplayers">
+          <i class="far fa-users"></i> List Cosplayer
+          <span class="side-count" id="countCosplayers">0</span>
+        </button>
+        <button type="button" class="side-btn" data-tab="tags">
+          <i class="far fa-tags"></i> Hệ thống Tag
+          <span class="side-count" id="countTags">0</span>
+        </button>
+        <button type="button" class="side-btn" data-tab="comments">
+          <i class="far fa-comments"></i> Bình luận
+          <span class="side-count" id="countComments">0</span>
+        </button>
+        <button type="button" class="side-btn" data-tab="tokens">
+          <i class="far fa-link"></i> Token download
+        </button>
+        <button type="button" class="side-btn" data-tab="settings">
+          <i class="far fa-sliders"></i> Cài đặt site
+        </button>
+        <button type="button" class="side-btn" data-tab="tools">
+          <i class="far fa-wrench"></i> Công cụ / Seed
+        </button>
+
+        <div class="admin-side-actions">
+          <button type="button" class="side-btn" id="adminThemeToggleSide" title="Đổi giao diện">
+            <i class="far fa-moon"></i> <span id="adminThemeSideLabel">Chế độ tối</span>
+          </button>
+          <a href="index.html" class="side-btn" target="_blank" rel="noopener">
+            <i class="far fa-arrow-up-right-from-square"></i> Xem site
+          </a>
+          <button type="button" class="side-btn side-btn-danger" id="btnLogoutSide">
+            <i class="far fa-right-from-bracket"></i> Đăng xuất
+          </button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <!-- DASHBOARD -->
+        <div id="tab-dashboard" class="admin-tab">
+          <h2 class="tab-title"><i class="far fa-chart-line"></i> Tổng quan</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon photo"><i class="far fa-image"></i></div>
+              <div>
+                <div class="stat-num" id="statPhotos">0</div>
+                <div class="stat-label">Bài ảnh</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon video"><i class="far fa-video"></i></div>
+              <div>
+                <div class="stat-num" id="statVideos">0</div>
+                <div class="stat-label">Bài video</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon view"><i class="far fa-eye"></i></div>
+              <div>
+                <div class="stat-num" id="statViews">0</div>
+                <div class="stat-label">Tổng lượt xem</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon dl"><i class="far fa-download"></i></div>
+              <div>
+                <div class="stat-num" id="statDownloads">0</div>
+                <div class="stat-label">Tổng lượt tải</div>
+              </div>
+            </div>
+          </div>
+          <p class="tab-hint">Bài có link zip private: <strong id="statZipOk">0</strong></p>
+          <div class="dash-row">
+            <div class="dash-panel">
+              <h3>Ảnh mới nhất (hiện trang chủ)</h3>
+              <div id="dashPhotos" class="dash-list"></div>
+            </div>
+            <div class="dash-panel">
+              <h3>Video mới nhất (hiện trang chủ)</h3>
+              <div id="dashVideos" class="dash-list"></div>
+            </div>
+          </div>
+          <p class="tab-hint" style="margin-top:16px">
+            Trang chủ chỉ hiển thị <strong>6 ảnh</strong> + <strong>6 video</strong> đầu (theo thời gian mới nhất).
+          </p>
+        </div>
+
+        <!-- PHOTOS -->
+        <div id="tab-photos" class="admin-tab" hidden>
+          <div class="tab-header">
+            <h2 class="tab-title"><i class="far fa-image"></i> Quản lý Ảnh</h2>
+            <button type="button" class="btn-primary" id="btnAddPhoto" style="width:auto">
+              <i class="far fa-plus"></i> Thêm ảnh
+            </button>
+          </div>
+          <div class="toolbar">
+            <input type="search" id="searchPhotos" class="search-input" placeholder="Tìm theo tiêu đề, ID, tag..." />
+          </div>
+          <div id="photoList" class="item-list"></div>
+        </div>
+
+        <!-- VIDEOS -->
+        <div id="tab-videos" class="admin-tab" hidden>
+          <div class="tab-header">
+            <h2 class="tab-title"><i class="far fa-video"></i> Quản lý Video</h2>
+            <button type="button" class="btn-primary" id="btnAddVideo" style="width:auto">
+              <i class="far fa-plus"></i> Thêm video
+            </button>
+          </div>
+          <div class="toolbar">
+            <input type="search" id="searchVideos" class="search-input" placeholder="Tìm theo tiêu đề, ID, tag..." />
+          </div>
+          <div id="videoList" class="item-list"></div>
+        </div>
+
+        <!-- COSPLAYERS -->
+        <div id="tab-cosplayers" class="admin-tab" hidden>
+          <div class="tab-header">
+            <h2 class="tab-title"><i class="far fa-users"></i> List Cosplayer</h2>
+            <button type="button" class="btn-primary" id="btnAddCosplayer" style="width:auto">
+              <i class="far fa-plus"></i> Thêm cosplayer
+            </button>
+          </div>
+          <p class="tab-hint">Mỗi dòng là 1 cosplayer. <strong>Tag</strong> dùng để lọc bài (giống <code>/tag/星之迟迟</code>). Link công khai: <code>cosplayers/</code></p>
+          <div id="cosplayerAdminList" class="item-list"></div>
+        </div>
+
+        <!-- MENUS -->
+        <div id="tab-menus" class="admin-tab" hidden>
+          <div class="tab-header">
+            <h2 class="tab-title"><i class="far fa-bars"></i> Quản lý Menu</h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button type="button" class="btn-outline" id="btnSeedMenus" style="width:auto">
+                <i class="far fa-database"></i> Menu mặc định
+              </button>
+              <button type="button" class="btn-primary" id="btnAddMenu" style="width:auto">
+                <i class="far fa-plus"></i> Thêm mục
+              </button>
+            </div>
+          </div>
+          <p class="tab-hint">Menu giống site: nhãn + URL tự đặt. Ví dụ URL: <code>./</code> (trang chủ), <code>list/?type=photo</code>, <code>list/?type=video</code>, <code>list/?type=all</code>. Bấm nhanh bên dưới để thêm mục có sẵn.</p>
+          <div id="quickMenuPresets" class="toolbar" style="flex-wrap:wrap;gap:8px;margin-bottom:14px"></div>
+          <div id="menuList" class="item-list"></div>
+        </div>
+
+        <!-- TAGS -->
+        <div id="tab-tags" class="admin-tab" hidden>
+          <div class="tab-header">
+            <h2 class="tab-title"><i class="far fa-tags"></i> Hệ thống Tag</h2>
+            <button type="button" class="btn-primary" id="btnSyncTags" style="width:auto">
+              <i class="far fa-rotate"></i> Đồng bộ từ bài viết
+            </button>
+          </div>
+          <p class="tab-hint">Tag lấy từ các bài ảnh/video. Bấm đồng bộ để cập nhật số lượng. Lọc trang chủ: <code>?tag=tên</code></p>
+          <div id="tagList" class="item-list"></div>
+        </div>
+
+        <!-- TOKENS -->
+
+        <!-- COMMENTS -->
+        <div id="tab-comments" class="admin-tab" hidden>
+          <h2 class="tab-title"><i class="far fa-comments"></i> Quản lý bình luận</h2>
+          <p class="tab-hint">Bình luận mới <strong>chờ duyệt</strong> mới hiện công khai. Lọc nhanh: gõ <code>pending</code> (chờ duyệt) hoặc <code>reported</code> (bị báo xấu).</p>
+          <div class="toolbar" style="margin-bottom:12px">
+            <input type="search" id="searchComments" placeholder="Lọc: post ID, tên, nội dung, pending, reported..." style="flex:1;max-width:360px;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-family:inherit" />
+            <button type="button" class="btn-outline" id="btnReloadComments"><i class="far fa-rotate"></i> Tải lại</button>
+            <button type="button" class="btn-outline" id="btnExportSitemap" title="Tải sitemap.xml"><i class="far fa-sitemap"></i> Sitemap</button>
+          </div>
+          <div id="commentAdminList" class="item-list"></div>
+        </div>
+        <div id="tab-tokens" class="admin-tab" hidden>
+          <div class="tab-header">
+            <h2 class="tab-title"><i class="far fa-link"></i> Token download</h2>
+            <button type="button" class="btn-outline btn-danger" id="btnClearTokens" style="width:auto">
+              <i class="far fa-trash"></i> Xóa token hết hạn / đã dùng
+            </button>
+          </div>
+          <p class="tab-hint">Token tạo khi user bấm Tải → trang <code>dl.html</code> đếm 10s. Hết hạn sau <strong>2 phút</strong>.</p>
+          <div id="tokenList" class="item-list"></div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="tab-settings" class="admin-tab" hidden>
+          <h2 class="tab-title"><i class="far fa-sliders"></i> Cài đặt site</h2>
+          <p class="tab-hint">Lưu trên Firebase (<code>settings/site</code>). Trang chủ có thể đọc sau khi bạn gắn thêm.</p>
+          <form id="settingsForm" class="settings-form">
+            <div class="form-group">
+              <label>Tên site</label>
+              <input type="text" id="setSiteName" placeholder="COSPLAYER" />
+            </div>
+            <div class="form-group">
+              <label>Slogan</label>
+              <input type="text" id="setSlogan" placeholder="Ảnh Video Cosplay" />
+            </div>
+            <div class="form-group">
+              <label>Footer</label>
+              <input type="text" id="setFooter" style="width:100%" placeholder="© Copyright by Cosplayer..." />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Số ảnh trên trang chủ</label>
+                <input type="number" id="setHomePhotos" min="1" max="24" value="6" />
+              </div>
+              <div class="form-group">
+                <label>Số video trên trang chủ</label>
+                <input type="number" id="setHomeVideos" min="1" max="24" value="6" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Token hết hạn (giây)</label>
+              <input type="number" id="setTokenTTL" min="60" max="600" value="120" />
+            </div>
+            <button type="submit" class="btn-primary" style="width:auto">
+              <i class="far fa-floppy-disk"></i> Lưu cài đặt
+            </button>
+            <p id="settingsMsg" class="form-msg" hidden></p>
+          </form>
+        </div>
+
+        <!-- TOOLS -->
+        <div id="tab-tools" class="admin-tab" hidden>
+          <h2 class="tab-title"><i class="far fa-wrench"></i> Công cụ</h2>
+          <div class="tools-grid">
+            <div class="tool-card">
+              <h3><i class="far fa-cloud-arrow-up"></i> Seed dữ liệu mẫu</h3>
+              <p>Đẩy 6 ảnh + 6 video demo lên Firebase (ghi đè ID seed).</p>
+              <button type="button" class="btn-primary" id="btnSeed" style="width:auto">
+                <i class="far fa-database"></i> Seed ngay
+              </button>
+              <p id="seedMsg" class="form-msg"></p>
+            </div>
+            <div class="tool-card">
+              <h3><i class="far fa-rotate"></i> Tải lại dữ liệu</h3>
+              <p>Refresh danh sách ảnh / video từ Firebase.</p>
+              <button type="button" class="btn-outline" id="btnReload" style="width:auto">
+                <i class="far fa-rotate"></i> Reload
+              </button>
+            </div>
+            <div class="tool-card">
+              <h3><i class="far fa-file-export"></i> Xuất / Nhập JSON</h3>
+              <p>Backup photos, videos và privateDownloads.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <button type="button" class="btn-primary" id="btnExport" style="width:auto">
+                  <i class="far fa-download"></i> Xuất JSON
+                </button>
+                <label class="btn-outline" style="cursor:pointer">
+                  <i class="far fa-upload"></i> Nhập JSON
+                  <input type="file" id="importFile" accept=".json,application/json" hidden />
+                </label>
+              </div>
+            </div>
+</div>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL COSPLAYER -->
+  <div id="cpModal" class="modal" hidden>
+    <div class="modal-box" style="max-width:420px">
+      <div class="modal-header">
+        <h3 id="cpModalTitle">Thêm cosplayer</h3>
+        <button type="button" id="cpModalClose" class="modal-x"><i class="far fa-xmark"></i></button>
+      </div>
+      <form id="cpForm">
+        <input type="hidden" id="cpEditId" />
+        <div class="form-group">
+          <label>Tên hiển thị *</label>
+          <input type="text" id="cpName" required placeholder="星之迟迟" />
+        </div>
+        <div class="form-group">
+          <label>Name eng</label>
+          <input type="text" id="cpNameEng" placeholder="Hoshilily" />
+        </div>
+        <div class="form-group">
+          <label>Tag (dùng lọc bài) *</label>
+          <input type="text" id="cpTag" required placeholder="星之迟迟" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="cpModalCancel" class="btn-outline">Hủy</button>
+          <button type="submit" class="btn-primary" style="width:auto"><i class="far fa-floppy-disk"></i> Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL MENU -->
+  <div id="menuModal" class="modal" hidden>
+    <div class="modal-box" style="max-width:420px">
+      <div class="modal-header">
+        <h3 id="menuModalTitle">Thêm menu</h3>
+        <button type="button" id="menuModalClose" class="modal-x"><i class="far fa-xmark"></i></button>
+      </div>
+      <form id="menuForm">
+        <input type="hidden" id="menuEditId" />
+        <div class="form-group">
+          <label>Nhãn *</label>
+          <input type="text" id="menuLabel" required placeholder="TRANG CHỦ" />
+        </div>
+        <div class="form-group">
+          <label>Link URL *</label>
+          <input type="text" id="menuUrl" required placeholder="list/?type=photo hoặc ./ hoặc https://..." />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Icon FA (vd: fa-house)</label>
+            <input type="text" id="menuIcon" placeholder="fa-house" />
+          </div>
+          <div class="form-group">
+            <label>Thứ tự</label>
+            <input type="number" id="menuOrder" value="1" min="0" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:4px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:500">
+            <input type="checkbox" id="menuOpenNewTab" style="width:auto;margin:0" />
+            Mở trong tab mới
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="menuModalCancel" class="btn-outline">Hủy</button>
+          <button type="submit" class="btn-primary" style="width:auto">
+            <i class="far fa-floppy-disk"></i> Lưu
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL EDIT -->
+  <div id="editModal" class="modal" hidden>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">Thêm bài</h3>
+        <button type="button" id="modalClose" class="modal-x"><i class="far fa-xmark"></i></button>
+      </div>
+      <form id="editForm">
+        <input type="hidden" id="editId" />
+        <input type="hidden" id="editType" />
+        <div class="form-group">
+          <label>ID</label>
+          <input type="text" id="fIdDisplay" readonly />
+        </div>
+        <div class="form-group">
+          <label>Tiêu đề *</label>
+          <input type="text" id="fTitle" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cosplayer</label>
+            <input type="text" id="fCosplayer" placeholder="Sayo Momo" />
+          </div>
+          <div class="form-group">
+            <label>Name eng</label>
+            <input type="text" id="fNameEng" placeholder="Sayo Momo" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Số lượng ảnh</label>
+            <input type="text" id="fImageCount" placeholder="20" />
+          </div>
+          <div class="form-group">
+            <label>Kích cỡ ảnh</label>
+            <input type="text" id="fImageDimensions" placeholder="4000×5993" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Danh mục</label>
+            <input type="text" id="fCategory" placeholder="anime / game / video" />
+          </div>
+          <div class="form-group">
+            <label>Tags (phẩy)</label>
+            <input type="text" id="fTags" placeholder="maid, anime, genshin" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea id="fDesc" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Link thumb * <small>(ảnh lưới trang chủ)</small></label>
+          <input type="url" id="fThumb" required placeholder="https://..." />
+          <div class="thumb-preview-wrap"><img id="thumbPreview" alt="" hidden /></div>
+        </div>
+        <div class="form-group">
+          <label>Link ảnh full</label>
+          <input type="url" id="fFull" placeholder="https://..." />
+        </div>
+        <div class="form-group">
+          <label>Link download (.zip) *</label>
+          <input type="url" id="fDownload" required placeholder="https://.../pack.zip" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Dung lượng</label>
+            <input type="text" id="fSize" placeholder="25 MB" />
+          </div>
+          <div class="form-group">
+            <label>Loại file</label>
+            <select id="fFileType">
+              <option value="zip">ZIP Pack</option>
+              <option value="image">Ảnh</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Lượt xem</label>
+            <input type="number" id="fViews" value="0" min="0" />
+          </div>
+          <div class="form-group">
+            <label>Lượt tải</label>
+            <input type="number" id="fDownloads" value="0" min="0" />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="modalCancel" class="btn-outline">Hủy</button>
+          <button type="submit" class="btn-primary" style="width:auto">
+            <i class="far fa-floppy-disk"></i> Lưu Firebase
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+  <!-- CONFIRM MODAL -->
+  <div id="confirmModal" class="modal confirm-modal" hidden>
+    <div class="modal-box confirm-box">
+      <div class="confirm-icon"><i class="far fa-triangle-exclamation"></i></div>
+      <h3 id="confirmTitle">Xác nhận</h3>
+      <p id="confirmMessage">Bạn có chắc muốn xóa?</p>
+      <div class="confirm-actions">
+        <button type="button" class="btn-outline" id="confirmCancel">Hủy</button>
+        <button type="button" class="btn-primary btn-confirm-danger" id="confirmOk">
+          <i class="far fa-trash"></i> Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="menu.js"></script>
+  <script src="cosplayers.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

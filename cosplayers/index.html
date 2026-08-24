@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <script>
+    (function(){try{var t=localStorage.getItem("cp-theme")||"light";document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>List Cosplayer - COSPLAYER</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/gZ9wqD9G/LOGOCOSPLAYER.png" />
+  <link rel="apple-touch-icon" href="https://i.ibb.co/gZ9wqD9G/LOGOCOSPLAYER.png" />
+  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v7.3.1/css/pro.min.css" />
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+  <header class="top-header">
+    <a href="../" class="logo" style="text-decoration:none">
+      <i class="far fa-star"></i> COSPLAYER <i class="far fa-star"></i>
+    </a>
+    <p class="logo-sub"><i class="far fa-sparkles"></i> Ảnh Video Cosplay <i class="far fa-sparkles"></i></p>
+  </header>
+
+  <nav class="main-nav">
+    <div class="nav-inner" id="mainNav"></div>
+  </nav>
+
+  <main class="main-content cosplayer-page">
+    <h2 class="section-title">
+      <i class="far fa-heart"></i> LIST COSPLAYER <i class="far fa-heart"></i>
+    </h2>
+    <div class="cosplayer-toolbar">
+      <input type="search" id="cpSearch" class="search-input" placeholder="Tìm cosplayer..." />
+    </div>
+    <div class="cp-panel">
+      <div class="cp-panel-head">
+        <span><i class="far fa-users" style="color:#e91e63;margin-right:6px"></i> Danh sách cosplayer</span>
+        <span class="cp-count" id="cpCount">—</span>
+      </div>
+      <div class="cp-list" id="cosplayerList">
+        <p class="cp-empty">Đang tải...</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© Copyright by Cosplayer ~ 2026</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../menu.js"></script>
+  <script src="../cosplayers.js"></script>
+  <script>initSiteHeader();</script>
+</body>
+</html>
